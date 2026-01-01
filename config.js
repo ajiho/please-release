@@ -2,11 +2,9 @@ import { resolve } from "node:path";
 import { lilconfig } from "lilconfig";
 import { access, constants } from "node:fs/promises";
 
-const CONFIG_NAME = "please-release";
-const explorer = lilconfig(CONFIG_NAME);
-
-async function loadConfig(customPath) {
+async function loadConfig(configKey, customPath) {
   let result;
+  const explorer = lilconfig(configKey);
   if (customPath) {
     // 传递了config选项
     const filepath = resolve(process.cwd(), customPath);
@@ -15,7 +13,7 @@ async function loadConfig(customPath) {
     const exists = await fileExists(filepath);
 
     if (!exists) {
-      throw new Error(`No ${CONFIG_NAME} configuration found.`);
+      throw new Error(`No ${configKey} configuration found.`);
     }
     result = await explorer.load(filepath);
   } else {

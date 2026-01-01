@@ -2,6 +2,13 @@
 import { release } from "./index.js";
 
 release().catch((err) => {
-  console.error(err);
-  process.exit(1);
+  if (err) {
+    if (err.code === "USER_CANCEL") {
+      console.log("❌ Release cancelled.");
+      return;
+    }
+    process.exit(1);
+  } else {
+    process.exit(0);
+  }
 });
