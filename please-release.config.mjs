@@ -5,18 +5,12 @@ export default {
   git: {
     commitMessage: "release: v${version}",
     tagName: "v${version}",
-    push: true,
-  },
-
-  changelog: {
-    command: "npm run changelog",
-    prettier: {
-      config: "configs/prettier.config.mjs",
-      file: "CHANGELOG.md",
-    },
+    push: false,
   },
 
   hooks: {
+    "before:init": "npm test",
+
     "before:selectVersion": () => {
       console.log("Before selecting version");
     },
@@ -25,14 +19,17 @@ export default {
       console.log("after selecting version", version);
     },
 
-    "after:version": ({ version }) => {
+    "before:version": ["npm run test", "echo Released ${version}"],
+
+    "after:version": ({ version, cancel }) => {
+      if (version === "0.2.7") {
+        cancel("User aborted");
+      }
       console.log("Updated version to", version);
     },
 
     "before:git:commit": "npm test",
 
-    "after:release": async ({ version }) => {
-      console.log(`🎉 Released ${version}`);
-    },
+    "after:release": "echo 已推送 v${version} ",
   },
 };

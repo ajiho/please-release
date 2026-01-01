@@ -1,4 +1,5 @@
 import prompts from "prompts";
+import { CancelledError } from "../errors.js";
 
 export async function selectTag(config, ctx) {
   const tags = config.tags;
@@ -17,11 +18,7 @@ export async function selectTag(config, ctx) {
   });
 
   if (!tagOk) {
-    const err = new Error("Release cancelled by user");
-    err.code = "USER_CANCEL";
-    throw err;
+    throw new CancelledError("Release cancelled by user");
   }
   ctx.tag = tags[tag];
-  // 下面不再执行了
-  console.log("rweer");
 }

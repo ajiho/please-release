@@ -1,11 +1,17 @@
-import { loadConfig } from "./config.js";
 import { runHook } from "./hooks.js";
-import { selectVersion, selectTag, version } from "./steps/index.js";
+import {
+  selectVersion,
+  selectTag,
+  version,
+  gitAdd,
+  gitCommit,
+  gitTag,
+  gitPush,
+} from "./steps/index.js";
 
-export async function release() {
-  const config = await loadConfig("please-release");
+export async function release(config) {
   const ctx = {};
-
+  await runHook(config.hooks?.["before:init"], ctx);
   // 选择版本
   await runHook(config.hooks?.["before:selectVersion"], ctx);
   await selectVersion(config, ctx);
@@ -16,8 +22,28 @@ export async function release() {
   await selectTag(config, ctx);
   await runHook(config.hooks?.["after:selectTag"], ctx);
 
-  // 更新
+  // version
   await runHook(config.hooks?.["before:version"], ctx);
   await version(config, ctx);
   await runHook(config.hooks?.["after:version"], ctx);
+
+  // git系列
+  await runHook(config.hooks?.["before:gitAdd"], ctx);
+  await gitAdd(config, ctx);
+  await runHook(config.hooks?.["after:gitAdd"], ctx);
+
+  await runHook(config.hooks?.["before:gitCommit"], ctx);
+  await gitCommit(config, ctx);
+  await runHook(config.hooks?.["after:gitCommit"], ctx);
+
+  await runHook(config.hooks?.["before:gitTag"], ctx);
+  await gitTag(config, ctx);
+  await runHook(config.hooks?.["after:gitTag"], ctx);
+
+  if (config.git?.push !== false) {
+    await runHook(config.hooks?.["before:gitPush"], ctx);
+    await gitPush(config, ctx);
+    await runHook(config.hooks?.["after:gitPush"], ctx);
+  }
+  await runHook(config.hooks?.["after:release"], ctx);
 }

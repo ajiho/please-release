@@ -1,24 +1,39 @@
 import { execa } from "execa";
+import { CancelledError } from "./errors.js";
+import { renderTemplate } from "./utils/template.js";
 
-export async function runHook(hook, context) {
+function createHookContext(ctx) {
+  return {
+    ...ctx,
+
+    cancel(message) {
+      throw new CancelledError(message);
+    },
+  };
+}
+
+export async function runHook(hook, ctx) {
   if (!hook) return;
 
-  // string：当作 shell 命令
+  const hookCtx = createHookContext(ctx);
+
+  // string：shell 命令
   if (typeof hook === "string") {
-    await execa(hook, { stdio: "inherit", shell: true });
+    const cmd = renderTemplate(hook, ctx);
+    await execa(cmd, { shell: true, stdio: "inherit" });
     return;
   }
 
   // function
   if (typeof hook === "function") {
-    await hook(context);
+    await hook(hookCtx);
     return;
   }
 
   // array
   if (Array.isArray(hook)) {
     for (const h of hook) {
-      await runHook(h, context);
+      await runHook(h, ctx); // 继续传原始 ctx
     }
   }
 }
