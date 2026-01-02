@@ -15,6 +15,7 @@ export async function selectTag(config, ctx) {
     type: "confirm",
     name: "yes",
     message: `Releasing v${ctx.version} on ${tags[tag]}. Confirm?`,
+    initial: true,
   });
 
   if (!tagOk) {

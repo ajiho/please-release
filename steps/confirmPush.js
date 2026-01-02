@@ -1,7 +1,10 @@
 import prompts from "prompts";
 import { CancelledError } from "../errors.js";
+import { getChangeset } from "../utils/index.js";
 
 export async function confirmPush(config, ctx) {
+  getChangeset();
+
   const { ok } = await prompts({
     type: "confirm",
     name: "ok",
