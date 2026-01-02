@@ -24,9 +24,9 @@ export default {
       console.log("After selecting version", version);
     },
 
-    "before:version": "npm run test",
+    "before:bump": "npm run test",
 
-    "after:version": ({ version, cancel }) => {
+    "after:bump": ({ version, cancel }) => {
       if (version === "0.2.7") {
         cancel("User aborted");
       }
