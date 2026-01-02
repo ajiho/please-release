@@ -1,4 +1,4 @@
-import { logger, run } from "../utils/index.js";
+import { logger, run, getChangeset } from "../utils/index.js";
 
 export async function version(config, ctx) {
   // 更新版本号
@@ -11,4 +11,15 @@ export async function version(config, ctx) {
     "--no-commit-hooks",
     "--allow-same-version",
   ]);
+
+  const changes = await getChangeset();
+
+  if (changes.length) {
+    console.log("");
+    logger.info("Changeset:");
+    for (const line of changes) {
+      console.log(`  ${line}`);
+    }
+    console.log("");
+  }
 }
