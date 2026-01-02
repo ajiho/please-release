@@ -1,4 +1,4 @@
-import { logger, run, getChangeset } from "../utils/index.js";
+import { run, getChangeset } from "../utils/index.js";
 
 export async function version(config, ctx) {
   await run("npm", [
@@ -8,4 +8,6 @@ export async function version(config, ctx) {
     "--no-commit-hooks",
     "--allow-same-version",
   ]);
+
+  getChangeset();
 }
