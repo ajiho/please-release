@@ -31,7 +31,7 @@ export async function checkGitRepoStatus(cwd = process.cwd()) {
 }
 
 export const run = (bin, args, opts = {}) =>
-  execa(bin, args, { stdio: "inherit", ...opts });
+  execa(bin, args, { stdio: "pipe", ...opts });
 
 export const logger = createConsola({
   defaults: {
