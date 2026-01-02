@@ -1,4 +1,5 @@
 import { run, renderTemplate } from "../utils/index.js";
+import ora from "ora";
 
 export async function gitAdd(config, ctx) {
   await run("git", ["add", "."]);
@@ -15,7 +16,9 @@ export async function gitTag(config, ctx) {
 }
 
 export async function gitPush(config, ctx) {
+  const spinner = ora("正在加载...").start();
   const tagName = renderTemplate(config.git?.tagName, ctx);
   await run("git", ["push"]);
   await run("git", ["push", "origin", `refs/tags/${tagName}`]);
+  spinner.succeed("加载完成！");
 }
