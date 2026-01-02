@@ -1,5 +1,4 @@
-import { step } from "../utils/step.js";
-import { run } from "../utils/run.js";
+import { step, run } from "../utils/index.js";
 
 export async function version(config, ctx) {
   // 更新版本号

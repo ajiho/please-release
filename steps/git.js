@@ -1,5 +1,4 @@
-import { run } from "../utils/run.js";
-import { renderTemplate } from "../utils/template.js";
+import { run, renderTemplate } from "../utils/index.js";
 
 export async function gitAdd(config, ctx) {
   await run("git", ["add", "."]);

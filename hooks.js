@@ -1,6 +1,6 @@
 import { execa } from "execa";
 import { CancelledError } from "./errors.js";
-import { renderTemplate } from "./utils/template.js";
+import { renderTemplate } from "./utils/index.js";
 
 function createHookContext(ctx) {
   return {

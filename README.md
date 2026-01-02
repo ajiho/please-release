@@ -1,6 +1,7 @@
 # please-release
 
 A lightweight, generic release CLI with steps and hooks.
+a
 
 ## 配置
 
