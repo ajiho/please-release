@@ -2,6 +2,11 @@ import { execa } from "execa";
 import { createConsola } from "consola";
 import { NAME } from "../constants/index.js";
 
+export async function getChangeset(cwd = process.cwd()) {
+  const { stdout } = await execa("git", ["status", "--porcelain"], { cwd });
+  return stdout.trim().split("\n").filter(Boolean);
+}
+
 /**
  * 判断当前目录是否是一个干净的 git 仓库
  */
