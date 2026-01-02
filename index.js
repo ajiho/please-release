@@ -1,4 +1,7 @@
 import { runHook } from "./hooks.js";
+import { formatDuration, createTimer } from "./timer.js";
+import { logger } from "./utils/index.js";
+
 import {
   selectVersion,
   selectTag,
@@ -12,6 +15,8 @@ import {
 
 export async function release(config) {
   await ensureGitRepo();
+
+  const timer = createTimer();
 
   const ctx = {};
   // 流程开始
@@ -50,4 +55,7 @@ export async function release(config) {
 
   // 流程走完之后
   await runHook(config.hooks?.["after:release"], ctx);
+
+  const cost = formatDuration(timer.end());
+  logger.success(`🏁 Done (in ${cost})`);
 }
