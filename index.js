@@ -11,6 +11,7 @@ import {
 
 export async function release(config) {
   const ctx = {};
+  // 流程开始
   await runHook(config.hooks?.["before:init"], ctx);
   // 选择版本
   await runHook(config.hooks?.["before:selectVersion"], ctx);
@@ -40,10 +41,10 @@ export async function release(config) {
   await gitTag(config, ctx);
   await runHook(config.hooks?.["after:gitTag"], ctx);
 
-  if (config.git?.push !== false) {
-    await runHook(config.hooks?.["before:gitPush"], ctx);
-    await gitPush(config, ctx);
-    await runHook(config.hooks?.["after:gitPush"], ctx);
-  }
+  await runHook(config.hooks?.["before:gitPush"], ctx);
+  await gitPush(config, ctx);
+  await runHook(config.hooks?.["after:gitPush"], ctx);
+
+  // 流程走完之后
   await runHook(config.hooks?.["after:release"], ctx);
 }

@@ -5,7 +5,6 @@ export default {
   git: {
     commitMessage: "release: v${version}",
     tagName: "v${version}",
-    push: false,
   },
 
   hooks: {
@@ -23,7 +22,7 @@ export default {
 
     "after:version": ({ version, cancel }) => {
       if (version === "0.2.7") {
-        cancel("User aborted");
+        cancel("Aborted");
       }
       console.log("Updated version to", version);
     },
