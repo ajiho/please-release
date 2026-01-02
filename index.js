@@ -11,6 +11,7 @@ import {
   gitTag,
   gitPush,
   ensureGitRepo,
+  confirmPush,
 } from "./steps/index.js";
 
 export async function release(config) {
@@ -36,6 +37,10 @@ export async function release(config) {
   await runHook(config.hooks?.["after:bump"], ctx);
 
   // git系列
+  await confirmPush();
+  await runHook(config.hooks?.["before:git"], ctx);
+
+  // git 具体步骤
   await runHook(config.hooks?.["before:git.add"], ctx);
   await gitAdd(config, ctx);
   await runHook(config.hooks?.["after:git.add"], ctx);
@@ -51,6 +56,8 @@ export async function release(config) {
   await runHook(config.hooks?.["before:git.push"], ctx);
   await gitPush(config, ctx);
   await runHook(config.hooks?.["after:git.push"], ctx);
+
+  await runHook(config.hooks?.["after:git"], ctx);
 
   // 流程走完之后
   await runHook(config.hooks?.["after:release"], ctx);

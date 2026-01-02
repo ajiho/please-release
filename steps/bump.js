@@ -1,4 +1,4 @@
-import { run, getChangeset } from "../utils/index.js";
+import { run } from "../utils/index.js";
 
 export async function bump(config, ctx) {
   await run("npm", [
@@ -8,6 +8,4 @@ export async function bump(config, ctx) {
     "--no-commit-hooks",
     "--allow-same-version",
   ]);
-
-  await getChangeset();
 }

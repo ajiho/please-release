@@ -18,7 +18,7 @@ export async function selectTag(config, ctx) {
   });
 
   if (!tagOk) {
-    throw new CancelledError("Release cancelled by user");
+    throw new CancelledError();
   }
   ctx.tag = tags[tag];
 }
