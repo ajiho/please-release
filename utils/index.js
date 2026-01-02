@@ -1,7 +1,15 @@
 import { execa } from "execa";
 import { createConsola } from "consola";
 import { NAME } from "../constants/index.js";
-import { logger } from "../utils/index.js";
+
+export const run = (bin, args, opts = {}) =>
+  execa(bin, args, { stdio: "pipe", ...opts });
+
+export const logger = createConsola({
+  defaults: {
+    tag: NAME,
+  },
+});
 
 export async function getChangeset(cwd = process.cwd()) {
   logger.info(`Changeset:`);
@@ -31,15 +39,6 @@ export async function checkGitRepoStatus(cwd = process.cwd()) {
     isClean: stdout.trim().length === 0,
   };
 }
-
-export const run = (bin, args, opts = {}) =>
-  execa(bin, args, { stdio: "pipe", ...opts });
-
-export const logger = createConsola({
-  defaults: {
-    tag: NAME,
-  },
-});
 
 export function renderTemplate(template, ctx) {
   if (!template) return template;
