@@ -9,5 +9,5 @@ export async function version(config, ctx) {
     "--allow-same-version",
   ]);
 
-  getChangeset();
+  await getChangeset();
 }
