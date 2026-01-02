@@ -1,7 +1,10 @@
-import { run, renderTemplate, logger } from "../utils/index.js";
+import { run, renderTemplate } from "../utils/index.js";
 import ora from "ora";
 
+let spinner;
+
 export async function gitAdd(config, ctx) {
+  spinner = ora("push...").start();
   await run("git", ["add", "."]);
 }
 
@@ -16,10 +19,8 @@ export async function gitTag(config, ctx) {
 }
 
 export async function gitPush(config, ctx) {
-  const spinner = ora("push...").start();
   const tagName = renderTemplate(config.git?.tagName, ctx);
   await run("git", ["push"]);
   await run("git", ["push", "origin", `refs/tags/${tagName}`]);
   spinner.stop();
-  logger.success("success");
 }

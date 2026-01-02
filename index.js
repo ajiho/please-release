@@ -15,7 +15,6 @@ import {
 
 export async function release(config) {
   await ensureGitRepo();
-
   const timer = createTimer();
 
   const ctx = {};
@@ -37,21 +36,21 @@ export async function release(config) {
   await runHook(config.hooks?.["after:bump"], ctx);
 
   // git系列
-  await runHook(config.hooks?.["before:gitAdd"], ctx);
+  await runHook(config.hooks?.["before:git.add"], ctx);
   await gitAdd(config, ctx);
-  await runHook(config.hooks?.["after:gitAdd"], ctx);
+  await runHook(config.hooks?.["after:git.add"], ctx);
 
-  await runHook(config.hooks?.["before:gitCommit"], ctx);
+  await runHook(config.hooks?.["before:git.commit"], ctx);
   await gitCommit(config, ctx);
-  await runHook(config.hooks?.["after:gitCommit"], ctx);
+  await runHook(config.hooks?.["after:git.commit"], ctx);
 
-  await runHook(config.hooks?.["before:gitTag"], ctx);
+  await runHook(config.hooks?.["before:git.tag"], ctx);
   await gitTag(config, ctx);
-  await runHook(config.hooks?.["after:gitTag"], ctx);
+  await runHook(config.hooks?.["after:git.tag"], ctx);
 
-  await runHook(config.hooks?.["before:gitPush"], ctx);
+  await runHook(config.hooks?.["before:git.push"], ctx);
   await gitPush(config, ctx);
-  await runHook(config.hooks?.["after:gitPush"], ctx);
+  await runHook(config.hooks?.["after:git.push"], ctx);
 
   // 流程走完之后
   await runHook(config.hooks?.["after:release"], ctx);
