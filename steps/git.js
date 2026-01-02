@@ -1,10 +1,7 @@
 import { run, renderTemplate } from "../utils/index.js";
 import ora from "ora";
 
-let spinner;
-
 export async function gitAdd(config, ctx) {
-  spinner = ora("push...").start();
   await run("git", ["add", "."]);
 }
 
@@ -19,6 +16,7 @@ export async function gitTag(config, ctx) {
 }
 
 export async function gitPush(config, ctx) {
+  const spinner = ora("Pushing to remote…").start();
   const tagName = renderTemplate(config.git?.tagName, ctx);
   await run("git", ["push"]);
   await run("git", ["push", "origin", `refs/tags/${tagName}`]);
