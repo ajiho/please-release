@@ -2,7 +2,7 @@ import { logger, run } from "../utils/index.js";
 
 export async function version(config, ctx) {
   // 更新版本号
-  logger.info("\nUpdating the package version...");
+  logger.info("Updating the package version...");
 
   await run("npm", [
     "version",
