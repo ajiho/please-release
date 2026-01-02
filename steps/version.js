@@ -1,8 +1,8 @@
-import { step, run } from "../utils/index.js";
+import { logger, run } from "../utils/index.js";
 
 export async function version(config, ctx) {
   // 更新版本号
-  step("\nUpdating the package version...");
+  logger.info("\nUpdating the package version...");
 
   await run("npm", [
     "version",

@@ -1,5 +1,6 @@
 import { execa } from "execa";
-import c from "picocolors";
+import { createConsola } from "consola";
+import { NAME } from "../constants/index.js";
 
 /**
  * 判断当前目录是否是一个干净的 git 仓库
@@ -27,7 +28,11 @@ export async function checkGitRepoStatus(cwd = process.cwd()) {
 export const run = (bin, args, opts = {}) =>
   execa(bin, args, { stdio: "inherit", ...opts });
 
-export const step = (msg) => console.log(c.cyan(msg));
+export const logger = createConsola({
+  defaults: {
+    tag: NAME,
+  },
+});
 
 export function renderTemplate(template, ctx) {
   if (!template) return template;

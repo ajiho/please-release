@@ -9,7 +9,27 @@ import {
   gitPush,
 } from "./steps/index.js";
 
+import { checkGitRepoStatus } from "./utils/index.js";
+import { logger } from "./utils/index.js";
+
 export async function release(config) {
+  // 检查当前git仓库
+  const { isGitRepo, isClean } = await checkGitRepoStatus();
+
+  if (!isGitRepo) {
+    logger.error(
+      "Current working directory is not a git repository.Please initialize a git repository first."
+    );
+    return;
+  }
+
+  if (!isClean) {
+    logger.error(
+      "Working dir must be clean.Please stage and commit your changes."
+    );
+    return;
+  }
+
   const ctx = {};
   // 流程开始
   await runHook(config.hooks?.["before:init"], ctx);
