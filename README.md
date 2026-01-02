@@ -7,7 +7,7 @@ A lightweight, generic release CLI with steps and hooks.
 ```js
 export default {
   increments: ["patch", "minor", "major"],
-  tags: ["latest", "next"],
+  tags: ["latest", "next", "beta", "alpha", "rc"],
 
   git: {
     commitMessage: "release: v${version}",
@@ -32,8 +32,6 @@ export default {
       }
       console.log("Updated version to", version);
     },
-
-    "before:git:commit": "npm test",
   },
 };
 ```
