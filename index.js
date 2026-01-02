@@ -56,5 +56,5 @@ export async function release(config) {
   await runHook(config.hooks?.["after:release"], ctx);
 
   const cost = formatDuration(timer.end());
-  logger.success(`🏁 Done (in ${cost})`);
+  logger.log(`🏁 Done (in ${cost})`);
 }
