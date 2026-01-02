@@ -1,10 +1,12 @@
 import { execa } from "execa";
 import { createConsola } from "consola";
 import { NAME } from "../constants/index.js";
+import { logger } from "../utils/index.js";
 
 export async function getChangeset(cwd = process.cwd()) {
-  const { stdout } = await execa("git", ["status", "--porcelain"], { cwd });
-  return stdout.trim().split("\n").filter(Boolean);
+  logger.info(`Changeset:`);
+  await run("git", ["status", "--porcelain"], { stdio: "inherit", cwd });
+  console.log("");
 }
 
 /**

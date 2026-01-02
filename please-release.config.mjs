@@ -10,7 +10,8 @@ export default {
   hooks: {
     "before:init": "npm test",
 
-    "before:selectVersion": () => {
+    "before:selectVersion": ({ logger }) => {
+      logger.info("Before selecting version");
       console.log("Before selecting version");
     },
 

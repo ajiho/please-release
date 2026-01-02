@@ -8,8 +8,4 @@ export async function version(config, ctx) {
     "--no-commit-hooks",
     "--allow-same-version",
   ]);
-
-  console.log("\nChangeset:");
-  await run("git", ["status", "--porcelain"], { stdio: "inherit" });
-  console.log("");
 }
