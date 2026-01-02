@@ -2,7 +2,7 @@ import { runHook } from "./hooks.js";
 import {
   selectVersion,
   selectTag,
-  version,
+  bump,
   gitAdd,
   gitCommit,
   gitTag,
@@ -43,10 +43,10 @@ export async function release(config) {
   await selectTag(config, ctx);
   await runHook(config.hooks?.["after:selectTag"], ctx);
 
-  // version
-  await runHook(config.hooks?.["before:version"], ctx);
-  await version(config, ctx);
-  await runHook(config.hooks?.["after:version"], ctx);
+  // bump
+  await runHook(config.hooks?.["before:bump"], ctx);
+  await bump(config, ctx);
+  await runHook(config.hooks?.["after:bump"], ctx);
 
   // git系列
   await runHook(config.hooks?.["before:gitAdd"], ctx);

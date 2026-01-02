@@ -8,27 +8,19 @@ export default {
   },
 
   hooks: {
-    "before:init": "npm test",
+    "before:init": ["npm run test"],
 
     "before:selectVersion": ({ logger }) => {
       logger.info("Before selecting version");
-      console.log("Before selecting version");
     },
 
-    "after:selectVersion": ({ version }) => {
-      console.log("after selecting version", version);
+    "after:selectVersion": ({ version, logger }) => {
+      logger.info(`after selecting version:${version}`);
     },
 
-    "before:version": ["npm run test", "echo Released ${version}"],
-
-    "after:version": ({ version, cancel }) => {
-      if (version === "0.2.7") {
-        cancel("Aborted");
-      }
-      console.log("Updated version to", version);
+    "after:bump": ({ version, cancel, logger }) => {
+      logger.info(`Updated version to:${version}`);
     },
-
-    "before:git:commit": "npm test",
 
     "after:release": "echo 已推送 v${version} ",
   },

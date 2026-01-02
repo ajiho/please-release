@@ -1,6 +1,6 @@
 import { run, getChangeset } from "../utils/index.js";
 
-export async function version(config, ctx) {
+export async function bump(config, ctx) {
   await run("npm", [
     "version",
     ctx.version,
