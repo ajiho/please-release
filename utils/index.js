@@ -12,8 +12,10 @@ export const logger = createConsola({
 });
 
 export async function getChangeset(cwd = process.cwd()) {
+  console.log("\n");
   logger.info(`Changeset:`);
   await run("git", ["status", "--porcelain"], { stdio: "inherit", cwd });
+  console.log("\n");
 }
 
 /**
