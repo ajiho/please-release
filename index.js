@@ -67,4 +67,5 @@ export async function release(config) {
 
   // 流程走完之后
   await runHook(config.hooks?.["after:release"], ctx);
+  console.log("111111111111");
 }
