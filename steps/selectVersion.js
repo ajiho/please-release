@@ -68,14 +68,18 @@ export async function selectVersion(config, ctx) {
     //     initial: currentVersion,
     //   })
     // ).version;
-    const choices = buildChoices(currentVersion);
 
-    await prompts({
+    const res = await prompts({
       type: "autocomplete",
       name: "version",
-      message: "选择下一个版本",
-      initial: choices[0]?.value,
-      choices,
+      message: "输入或者选择自定义版本",
+      choices: [
+        { title: "latest", value: "latest" },
+        { title: "next", value: "next" },
+        { title: "beta", value: "beta" },
+        { title: "alpha", value: "alpha" },
+      ],
+      initial: currentVersion,
     });
   } else {
     targetVersion = versions[release].match(/\((.*)\)/)[1];
