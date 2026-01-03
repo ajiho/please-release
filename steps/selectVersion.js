@@ -56,7 +56,6 @@ export async function selectVersion(config, ctx) {
         return valid(value) ? true : "Invalid semver version";
       },
       onRender() {
-        // 只在第一次渲染时设置
         if (this.firstRender) {
           this.value = currentVersion;
           this.cursor = currentVersion.length;
