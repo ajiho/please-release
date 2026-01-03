@@ -9,35 +9,6 @@ const { version: currentVersion } = createRequire(import.meta.url)(
 const { inc: _inc, valid } = semver;
 const inc = (i) => _inc(currentVersion, i);
 
-function buildChoices(current) {
-  const parsed = semver.parse(current);
-
-  const base = `${parsed.major}.${parsed.minor}.${parsed.patch}`;
-
-  const prereleaseTag = parsed.prerelease[0]; // alpha / beta / rc
-  const prereleaseNum = parsed.prerelease[1] ?? -1;
-
-  const choices = [];
-
-  if (prereleaseTag) {
-    // 当前 prerelease +1（放第一）
-    choices.push({
-      title: `${prereleaseTag}（+1，推荐）`,
-      value: semver.inc(current, "prerelease", prereleaseTag),
-    });
-  }
-
-  choices.push(
-    { title: "latest（正式版）", value: base },
-    { title: "beta", value: `${base}-beta.0` },
-    { title: "rc", value: `${base}-rc.0` },
-    { title: "alpha", value: `${base}-alpha.0` },
-    { title: "next（自动）", value: "__next__" }
-  );
-
-  return choices;
-}
-
 export async function selectVersion(config, ctx) {
   let targetVersion;
 
@@ -69,18 +40,22 @@ export async function selectVersion(config, ctx) {
     //   })
     // ).version;
 
-    const res = await prompts({
-      type: "autocomplete",
-      name: "version",
-      message: "输入或者选择自定义版本",
-      choices: [
-        { title: "next", value: "next" },
-        { title: "0.0.28-beta.0", value: "0.0.28-beta.0" },
-        { title: "0.0.28-alpha.0", value: "0.0.28-alpha.1" },
-        { title: "0.0.28-rc.0", value: "0.0.28-rc.0" },
-      ],
-      initial: currentVersion,
-    });
+    targetVersion = (
+      await prompts({
+        type: "autocomplete",
+        name: "version",
+        message: "输入或者选择自定义版本",
+        choices: [
+          { title: "next", value: "next" },
+          { title: "0.0.28-beta.0", value: "0.0.28-beta.0" },
+          { title: "0.0.28-alpha.0", value: "0.0.28-alpha.1" },
+          { title: "0.0.28-rc.0", value: "0.0.28-rc.0" },
+        ],
+        initial: currentVersion,
+      })
+    ).version;
+
+    console.log(targetVersion);
   } else {
     targetVersion = versions[release].match(/\((.*)\)/)[1];
   }
