@@ -1,10 +1,11 @@
 import { runHook } from "./hooks.js";
 import { formatDuration, createTimer } from "./timer.js";
 import { logger } from "./utils/index.js";
+import { merge } from "lodash-es";
+import defaultsConf from "./defaults.js";
 
 import {
   selectVersion,
-  selectTag,
   bump,
   gitAdd,
   gitCommit,
@@ -14,7 +15,9 @@ import {
   confirmPush,
 } from "./steps/index.js";
 
-export async function release(config) {
+export async function release(config = {}) {
+  config = merge({}, defaultsConf, config);
+
   await ensureGitRepo();
   const timer = createTimer();
 

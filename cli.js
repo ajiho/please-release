@@ -8,7 +8,7 @@ const config = await loadConfig(NAME);
 
 release(config).catch((err) => {
   if (err) {
-    logger.error(err.message);
+    logger.error(err);
     process.exit(1);
   } else {
     process.exit(0);

@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import prompts from "prompts";
+import { CancelledError } from "../errors.js";
 import semver from "semver";
 const { version: currentVersion } = createRequire(import.meta.url)(
   "../package.json"
@@ -23,16 +24,34 @@ export async function selectVersion(config, ctx) {
     choices: versions,
   });
 
+  // 如果没选择结束直接抛出异常
+  if (release === undefined) {
+    throw new CancelledError();
+  }
+
   if (release === 3) {
     //选择了自定义
-    targetVersion = (
-      await prompts({
-        type: "text",
-        name: "version",
-        message: "Input custom version",
-        initial: currentVersion,
-      })
-    ).version;
+    // targetVersion = (
+    //   await prompts({
+    //     type: "text",
+    //     name: "version",
+    //     message: "Input custom version",
+    //     initial: currentVersion,
+    //   })
+    // ).version;
+
+    const res = await prompts({
+      type: "autocomplete",
+      name: "value",
+      message: "请输入或选择一个 tag",
+      choices: [
+        { title: "latest", value: "latest" },
+        { title: "next", value: "next" },
+        { title: "beta", value: "beta" },
+        { title: "alpha", value: "alpha" },
+      ],
+    });
+    console.log(res);
   } else {
     targetVersion = versions[release].match(/\((.*)\)/)[1];
   }
