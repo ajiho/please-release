@@ -1,6 +1,6 @@
 {
   "name": "please-release",
-  "version": "0.0.28-alpha.1",
+  "version": "0.0.16",
   "main": "index.js",
   "type": "module",
   "scripts": {
