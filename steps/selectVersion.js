@@ -53,7 +53,12 @@ export async function selectVersion(config, ctx) {
       message: "Input custom version",
       initial: currentVersion,
       validate(value) {
-        return valid(value) ? true : "Invalid semver version";
+        const v = value.trim();
+        if (!valid(v)) return "Invalid semver version";
+        if (!semver.gt(value, currentVersion)) {
+          return "Version must be greater than current version";
+        }
+        return true;
       },
       onRender() {
         if (this.firstRender) {
