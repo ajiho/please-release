@@ -11,7 +11,7 @@ export async function selectTag(config, ctx) {
     choices: tags,
   });
 
-  if (!tag) {
+  if (tag === undefined) {
     throw new CancelledError();
   }
 
