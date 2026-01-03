@@ -42,16 +42,17 @@ export async function selectVersion(config, ctx) {
 
     const res = await prompts({
       type: "autocomplete",
-      name: "value",
-      message: "请输入或选择一个 tag",
+      name: "version",
+      message: "输入或者选择自定义版本",
       choices: [
         { title: "latest", value: "latest" },
         { title: "next", value: "next" },
         { title: "beta", value: "beta" },
         { title: "alpha", value: "alpha" },
       ],
+      initial: currentVersion,
     });
-    console.log(res);
+    console.log(res.version);
   } else {
     targetVersion = versions[release].match(/\((.*)\)/)[1];
   }
