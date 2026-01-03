@@ -22,7 +22,7 @@ export async function selectVersion(config, ctx) {
 
   // 👉 如果当前是预发布版本，插入 prerelease 选项
   if (isPrerelease) {
-    choices.push({
+    choices.unshift({
       title: `prerelease (${inc(currentVersion, "prerelease")})`,
       value: inc(currentVersion, "prerelease"),
     });
