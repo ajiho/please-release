@@ -31,33 +31,14 @@ export async function selectVersion(config, ctx) {
 
   if (release === 3) {
     //选择了自定义
-    // targetVersion = (
-    //   await prompts({
-    //     type: "text",
-    //     name: "version",
-    //     message: "Input custom version",
-    //     initial: currentVersion,
-    //   })
-    // ).version;
-
-    const choices = [
-      { title: "alpha (+1)", value: "0.0.28-alpha.1" },
-      { title: "latest", value: "0.0.28" },
-      { title: "beta", value: "0.0.28-beta.0" },
-      { title: "rc", value: "0.0.28-rc.0" },
-    ];
-
     targetVersion = (
       await prompts({
-        type: "autocomplete",
+        type: "text",
         name: "version",
-        message: "输入或者选择自定义版本",
-        initial: currentVersion, // 👈 回显原始版本
-        choices,
+        message: "Input custom version",
+        initial: currentVersion,
       })
     ).version;
-
-    console.log(targetVersion);
   } else {
     targetVersion = versions[release].match(/\((.*)\)/)[1];
   }
