@@ -14,13 +14,13 @@ export async function selectVersion(config, ctx) {
 
   const isPrerelease = prerelease(currentVersion);
 
-  // 1. 构建版本选项
+  // 构建版本选项
   const choices = config.increments.map((type) => ({
     title: `${type} (${inc(currentVersion, type)})`,
     value: inc(currentVersion, type),
   }));
 
-  // 👉 如果当前是预发布版本，插入 prerelease 选项
+  // 如果当前是预发布版本，插入 prerelease 选项
   if (isPrerelease) {
     choices.unshift({
       title: `prerelease (${inc(currentVersion, "prerelease")})`,
@@ -45,7 +45,7 @@ export async function selectVersion(config, ctx) {
     throw new CancelledError();
   }
 
-  // 2. 自定义版本号（带校验）
+  // 自定义版本号
   if (release === "custom") {
     const { version } = await prompts({
       type: "text",
