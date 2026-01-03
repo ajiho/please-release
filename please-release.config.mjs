@@ -1,6 +1,6 @@
 export default {
   increments: ["patch", "minor", "major"],
-  tags: ["latest", "next", "beta", "alpha", "rc"],
+  tags: ["latest", "next"],
 
   git: {
     commitMessage: "release: v${version}",
