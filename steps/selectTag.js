@@ -11,7 +11,9 @@ export async function selectTag(config, ctx) {
     choices: tags,
   });
 
-  console.log(tag);
+  if (!tag) {
+    throw new CancelledError();
+  }
 
   const { yes: tagOk } = await prompts({
     type: "confirm",
