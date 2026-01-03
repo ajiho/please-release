@@ -2,50 +2,68 @@ import { createRequire } from "node:module";
 import prompts from "prompts";
 import { CancelledError } from "../errors.js";
 import semver from "semver";
+
 const { version: currentVersion } = createRequire(import.meta.url)(
   "../package.json"
 );
 
-const { inc: _inc, valid } = semver;
-const inc = (i) => _inc(currentVersion, i);
+const { inc, valid, prerelease } = semver;
 
 export async function selectVersion(config, ctx) {
   let targetVersion;
 
-  //准备选项
-  const versions = config.increments
-    .map((i) => `${i} (${inc(i)})`)
-    .concat(["custom"]);
+  const isPrerelease = prerelease(currentVersion);
+
+  // 1. 构建版本选项
+  const choices = config.increments.map((type) => ({
+    title: `${type} (${inc(currentVersion, type)})`,
+    value: inc(currentVersion, type),
+  }));
+
+  // 👉 如果当前是预发布版本，插入 prerelease 选项
+  if (isPrerelease) {
+    choices.push({
+      title: `prerelease (${inc(currentVersion, "prerelease")})`,
+      value: inc(currentVersion, "prerelease"),
+    });
+  }
+
+  // custom 始终放最后
+  choices.push({
+    title: "custom",
+    value: "custom",
+  });
 
   const { release } = await prompts({
     type: "select",
     name: "release",
     message: "Select release type",
-    choices: versions,
+    choices,
   });
 
-  // 如果没选择结束直接抛出异常
-  if (release === undefined) {
+  if (!release) {
     throw new CancelledError();
   }
 
-  if (release === 3) {
-    //选择了自定义
-    targetVersion = (
-      await prompts({
-        type: "text",
-        name: "version",
-        message: "Input custom version",
-        initial: currentVersion,
-      })
-    ).version;
-  } else {
-    targetVersion = versions[release].match(/\((.*)\)/)[1];
-  }
+  // 2. 自定义版本号（带校验）
+  if (release === "custom") {
+    const { version } = await prompts({
+      type: "text",
+      name: "version",
+      message: "Input custom version",
+      initial: currentVersion,
+      validate(value) {
+        return valid(value) ? true : "Invalid semver version";
+      },
+    });
 
-  if (!valid(targetVersion)) {
-    //验证是否有效版本号
-    throw new Error(`Invalid target version: ${targetVersion}`);
+    if (!version) {
+      throw new CancelledError();
+    }
+
+    targetVersion = version;
+  } else {
+    targetVersion = release;
   }
 
   ctx.version = targetVersion;
