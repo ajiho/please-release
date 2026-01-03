@@ -12,8 +12,10 @@ export const logger = createConsola({
 });
 
 export async function getChangeset(cwd = process.cwd()) {
+  blank();
   logger.log(`Changeset:`);
   await run("git", ["status", "--porcelain"], { stdio: "inherit", cwd });
+  blank();
 }
 
 /**
@@ -48,4 +50,8 @@ export function renderTemplate(template, ctx) {
     }
     return String(ctx[key]);
   });
+}
+
+export function blank(lines = 1) {
+  process.stdout.write("\n".repeat(lines));
 }
