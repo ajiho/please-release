@@ -6,6 +6,7 @@ import defaultsConf from "./defaults.js";
 
 import {
   selectVersion,
+  selectTag,
   bump,
   gitAdd,
   gitCommit,
@@ -28,6 +29,11 @@ export async function release(config = {}) {
   await runHook(config.hooks?.["before:selectVersion"], ctx);
   await selectVersion(config, ctx);
   await runHook(config.hooks?.["after:selectVersion"], ctx);
+
+  // 选择tag
+  await runHook(config.hooks?.["before:selectTag"], ctx);
+  await selectTag(config, ctx);
+  await runHook(config.hooks?.["after:selectTag"], ctx);
 
   // bump
   await runHook(config.hooks?.["before:bump"], ctx);

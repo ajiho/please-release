@@ -69,10 +69,6 @@ export async function selectVersion(config, ctx) {
 
     targetVersion = version;
   } else {
-    console.log("-------------");
-
-    console.log(targetVersion);
-
     targetVersion = release;
   }
 
