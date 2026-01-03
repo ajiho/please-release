@@ -40,18 +40,20 @@ export async function selectVersion(config, ctx) {
     //   })
     // ).version;
 
+    const choices = [
+      { title: "alpha (+1)", value: "0.0.28-alpha.1" },
+      { title: "latest", value: "0.0.28" },
+      { title: "beta", value: "0.0.28-beta.0" },
+      { title: "rc", value: "0.0.28-rc.0" },
+    ];
+
     targetVersion = (
       await prompts({
         type: "autocomplete",
         name: "version",
         message: "输入或者选择自定义版本",
-        choices: [
-          { title: "next", value: "next" },
-          { title: "0.0.28-beta.0", value: "0.0.28-beta.0" },
-          { title: "0.0.28-alpha.0", value: "0.0.28-alpha.1" },
-          { title: "0.0.28-rc.0", value: "0.0.28-rc.0" },
-        ],
-        initial: currentVersion,
+        initial: currentVersion, // 👈 回显原始版本
+        choices,
       })
     ).version;
 
