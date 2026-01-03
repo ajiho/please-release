@@ -68,6 +68,7 @@ export async function selectVersion(config, ctx) {
     //     initial: currentVersion,
     //   })
     // ).version;
+    const choices = buildChoices(currentVersion);
 
     await prompts({
       type: "autocomplete",
