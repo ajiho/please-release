@@ -11,6 +11,8 @@ export async function selectTag(config, ctx) {
     choices: tags,
   });
 
+  console.log(tag);
+
   const { yes: tagOk } = await prompts({
     type: "confirm",
     name: "yes",
