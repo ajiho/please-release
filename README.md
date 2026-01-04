@@ -2,8 +2,6 @@
 
 A lightweight, generic release CLI with steps and hooks.
 
-npm pack
-
 ## 配置
 
 ```js
