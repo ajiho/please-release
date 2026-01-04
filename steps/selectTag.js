@@ -5,20 +5,24 @@ import { CancelledError } from "../errors.js";
 export async function selectTag(config, ctx) {
   const isPrerelease = !!semver.prerelease(ctx.version);
 
-  const choices = config.tags.map((tag) => {
-    if (tag === "latest" && isPrerelease) {
-      return {
-        title: `${tag} (not allowed for prerelease)`,
-        value: tag,
-        disabled: true,
-      };
-    }
+  const choices = config.tags
+    .map((tag) => {
+      const disabled = isPrerelease && tag === "latest";
 
-    return {
-      title: tag,
+      return {
+        tag,
+        disabled,
+        title: disabled ? `${tag} (not allowed for prerelease)` : tag,
+      };
+    })
+    // ✅ 核心：可用的在前，禁用的在后
+    .sort((a, b) => Number(a.disabled) - Number(b.disabled))
+    // 映射成 prompts 所需结构
+    .map(({ tag, disabled, title }) => ({
+      title,
       value: tag,
-    };
-  });
+      disabled,
+    }));
 
   const { tag } = await prompts({
     type: "select",
