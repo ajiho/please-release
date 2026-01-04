@@ -1,6 +1,6 @@
 {
   "name": "please-release",
-  "version": "1.0.22-beta.3",
+  "version": "1.0.22-beta.4",
   "main": "index.js",
   "type": "module",
   "scripts": {
