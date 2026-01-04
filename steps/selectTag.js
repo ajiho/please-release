@@ -12,12 +12,11 @@ export async function selectTag(config, ctx) {
       return {
         tag,
         disabled,
-        title: disabled ? `${tag} (not allowed for prerelease)` : tag,
+        title: tag,
       };
     })
-    // ✅ 核心：可用的在前，禁用的在后
+    // 可用的在前，禁用的在后
     .sort((a, b) => Number(a.disabled) - Number(b.disabled))
-    // 映射成 prompts 所需结构
     .map(({ tag, disabled, title }) => ({
       title,
       value: tag,
